@@ -1,8 +1,8 @@
 <template>
 
-<div class="bg-neutral-primary-soft block max-w-sm border border-default rounded-base shadow-xs">
+<div class="bg-neutral-primary-soft block max-w-sm border border-default rounded-md shadow-sm">
     <a href="#">
-        <img class="rounded-t-base" src="/docs/images/blog/image-1.jpg" alt="" />
+        <img class="rounded-t-base" src="" alt="" />
     </a>
     <div class="p-6 text-center">
         <span class="inline-flex items-center bg-brand-softer border border-brand-subtle text-fg-brand-strong text-xs font-medium px-1.5 py-0.5 rounded-sm">
@@ -10,7 +10,7 @@
             Trending
         </span>
         <a href="#">
-            <h5 class="mt-3 mb-6 text-2xl font-semibold tracking-tight text-heading">Streamlining your design process today.</h5>
+            <h5 class="mt-3 mb-6 text-2xl font-mono font-extrabold tracking-tight text-heading">Streamlining your design process today.</h5>
         </a>
         <a href="#" class="inline-flex items-center text-white bg-brand box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">
             Read more
