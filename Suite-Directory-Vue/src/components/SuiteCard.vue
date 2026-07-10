@@ -10,11 +10,7 @@
   >
   
   <h3 class="text-base font-semibold">{{ suite.name }}</h3>
-    <img
-      :src="suite.image"
-      :alt="suite.name"
-      class="w-1/2 object-cover rounded-lg mb-2"
-    />
+    <img :src="suite.image" :alt="suite.name" class="w-1/2 object-cover rounded-lg mb-2"/>
     <p class="text-sm text-slate-300">{{ suite.location }}</p>
     <p class="text-xs text-slate-400">{{ suite.keyFeatures }}</p>
   </a>
