@@ -1,11 +1,15 @@
-<script setup></script>
+<script setup>
+import SuiteCard from './components/SuiteCard.vue';
+const testSuite = {
+  name: 'Test Suite',
+  location: 'Toronto',
+  image: 'https://picsum.photos/400',
+  keyfeatures: '2 Bathroom, 3 bed'
+}
+</script>
 
 <template>
-  <h1>You did it!</h1>
-  <p>
-    Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
-    documentation
-  </p>
+<SuiteCard :suite="testSuite"/>
 </template>
 
 <style scoped></style>
