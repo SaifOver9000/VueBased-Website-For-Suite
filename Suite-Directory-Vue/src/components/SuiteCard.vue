@@ -30,7 +30,9 @@ defineProps({
 })
 
 function handleClick(event) {
-  // ...
+  // Handle click event
+  console.log('Card clicked:', suite);
+  
 }
 </script>
 
