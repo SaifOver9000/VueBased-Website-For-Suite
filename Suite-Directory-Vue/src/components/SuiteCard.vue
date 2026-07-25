@@ -1,7 +1,7 @@
 <template>
   <div 
     @click="handleClick"
-    class="max-w-xl w-full bg-white border border-slate-900 rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 cursor-pointer"
+    class="max-w-xl w-full bg-white border-4 border-slate-900 rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 cursor-pointer"
   >
     <!-- Hotel Image -->
     <a href="#" class="block relative group overflow-hidden" @click.prevent>
