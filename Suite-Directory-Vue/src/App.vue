@@ -1,15 +1,11 @@
 <script setup>
-import SuiteCard from './components/SuiteCard.vue';
-const testSuite = {
-  name: 'Test Suite',
-  location: 'Toronto',
-  image: 'https://picsum.photos/400',
-  keyfeatures: '2 Bathroom, 3 bed'
-}
+// import SuiteCard from './components/SuiteCard.vue';
+import SuiteGrid from './components/SuiteGrid.vue';
+
 </script>
 
 <template>
-<SuiteCard :suite="testSuite"/>
+<SuiteGrid />
 </template>
 
 <style scoped></style>
