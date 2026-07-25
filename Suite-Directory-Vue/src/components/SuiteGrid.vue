@@ -1,7 +1,12 @@
 <template>
   <!-- Full-page background container with vertical centering -->
   <div class="min-h-screen bg-slate-50 flex justify-center items-start p-6 sm:p-12">
+
+    <div class="absolute top-0 left-0 w-full h-full pointer-events-none">
+        <h1 class="sr-only">Hotel Suites</h1>
+    </div>
     
+
     <!-- Vertical Stack Container with spacing between cards -->
     <div class="w-full max-w-xl flex flex-col items-center gap-8">
       
@@ -19,7 +24,6 @@
 
 <script setup>
 import { ref } from 'vue'
-import HotelCard from './HotelCard.vue'
 import SuiteCard from './SuiteCard.vue';
 
 // Sample data structure matching key features requirements
