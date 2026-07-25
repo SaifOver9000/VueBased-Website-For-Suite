@@ -1,41 +1,102 @@
 <template>
-
-<div class="bg-neutral-primary-soft block max-w-sm border border-default rounded-md shadow-sm">
-    <a href="#">
-        <img class="rounded-t-base" src="" alt="" />
+  <div 
+    @click="handleClick"
+    class="max-w-xl w-full bg-white border border-slate-900 rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 cursor-pointer"
+  >
+    <!-- Hotel Image -->
+    <a href="#" class="block relative group overflow-hidden" @click.prevent>
+      <img 
+        class="w-full h-72 object-cover group-hover:scale-105 transition-transform duration-500" 
+        :src="suite.image" 
+        :alt="suite.name" 
+      />
+      <!-- Rating Badge -->
+      <span 
+        v-if="suite.rating" 
+        class="absolute top-4 right-4 bg-slate-900/80 backdrop-blur-md text-white text-xs font-semibold px-3 py-1.5 rounded-full shadow-sm"
+      >
+        ★ {{ suite.rating }}
+      </span>
+      <!-- Tag Badge -->
+      <span 
+        v-if="suite.tag" 
+        class="absolute top-4 left-4 bg-white/90 backdrop-blur-md text-slate-900 text-xs font-bold px-3 py-1.5 rounded-full shadow-sm"
+      >
+        {{ suite.tag }}
+      </span>
     </a>
-    <div class="p-6 text-center">
-        <span class="inline-flex items-center bg-brand-softer border border-brand-subtle text-fg-brand-strong text-xs font-medium px-1.5 py-0.5 rounded-sm">
-            <svg class="w-3 h-3 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.122 17.645a7.185 7.185 0 0 1-2.656 2.495 7.06 7.06 0 0 1-3.52.853 6.617 6.617 0 0 1-3.306-.718 6.73 6.73 0 0 1-2.54-2.266c-2.672-4.57.287-8.846.887-9.668A4.448 4.448 0 0 0 8.07 6.31 4.49 4.49 0 0 0 7.997 4c1.284.965 6.43 3.258 5.525 10.631 1.496-1.136 2.7-3.046 2.846-6.216 1.43 1.061 3.985 5.462 1.754 9.23Z"/></svg>
-            Trending
-        </span>
-        <a href="#">
-            <h5 class="mt-3 mb-6 text-2xl font-mono font-extrabold tracking-tight text-heading">Streamlining your design process today.</h5>
-        </a>
-        <a href="#" class="inline-flex items-center text-white bg-brand box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">
-            Read more
-            <svg class="w-4 h-4 ms-1.5 rtl:rotate-180 -me-0.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m14 0-4 4m4-4-4-4"/></svg>
-        </a>
-    </div>
-</div>
 
+    <!-- Card Body -->
+    <div class="p-8">
+      <!-- Title & Price Header -->
+      <div class="flex items-start justify-between gap-4 mb-3">
+        <h2 class="text-2xl font-bold tracking-tight text-slate-900 hover:text-blue-600 transition-colors">
+          {{ suite.name }}
+        </h2>
+        <div v-if="suite.price" class="text-right shrink-0">
+          <span class="text-2xl font-extrabold text-slate-900">${{ suite.price }}</span>
+          <span class="text-xs text-slate-500 block">/ night</span>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <p class="text-slate-600 leading-relaxed mb-6">
+        {{ suite.description }}
+      </p>
+
+      <!-- Key Features Specs Bar -->
+      <div 
+        v-if="suite.features" 
+        class="grid grid-cols-4 gap-2 py-3 px-4 bg-slate-100 rounded-2xl mb-6 text-slate-700 text-xs font-medium"
+      >
+        <div class="flex items-center gap-1.5 justify-center">
+          <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+          <span>{{ suite.features.beds }} Beds</span>
+        </div>
+        <div class="flex items-center gap-1.5 justify-center">
+          <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"/></svg>
+          <span>{{ suite.features.baths }} Baths</span>
+        </div>
+        <div class="flex items-center gap-1.5 justify-center">
+          <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+          <span>{{ suite.features.guests }} Guests</span>
+        </div>
+        <div class="flex items-center gap-1.5 justify-center">
+          <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
+          <span>{{ suite.features.sqft }} sq ft</span>
+        </div>
+      </div>
+
+      <!-- Action Button -->
+      <button 
+        type="button" 
+        class="inline-flex w-full items-center justify-center font-semibold text-sm text-white bg-slate-900 hover:bg-slate-800 active:scale-[0.98] rounded-2xl px-6 py-3.5 transition-all shadow-md"
+      >
+        Book Now
+        <svg class="w-4 h-4 ms-2 rtl:rotate-180" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m14 0-4 4m4-4-4-4"/>
+        </svg>
+      </button>
+    </div>
+  </div>
 </template>
 
 <script setup>
-defineProps({
+const props = defineProps({
   suite: {
     type: Object,
     required: true
   }
 })
 
-function handleClick(event) {
-  // Handle click event
-  console.log('Card clicked:', suite);
-  
+const emit = defineEmits(['select'])
+
+function handleClick() {
+  console.log('Card clicked:', props.suite)
+  emit('select', props.suite)
 }
 </script>
 
 <style scoped>
-/* ...leave this as-is for now... */
+/* Scoped styles */
 </style>
