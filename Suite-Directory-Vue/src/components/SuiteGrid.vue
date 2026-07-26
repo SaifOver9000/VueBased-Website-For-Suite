@@ -6,7 +6,6 @@
         <h1 class="sr-only">Hotel Suites</h1>
     </div>
     
-
     <!-- Vertical Stack Container with spacing between cards -->
     <div class="w-full max-w-xl flex flex-col items-center gap-8">
       
