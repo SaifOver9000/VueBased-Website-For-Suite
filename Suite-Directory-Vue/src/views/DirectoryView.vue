@@ -11,6 +11,7 @@
         Discover top-rated luxury accommodations and stays
       </p>
 
+
       <!-- Search Bar -->
       <div class="mt-6 relative">
         <input 
@@ -25,6 +26,7 @@
         </svg>
       </div>
     </header>
+    
 
     <!-- Grid Layout Container -->
     <section class="w-full max-w-xl">
