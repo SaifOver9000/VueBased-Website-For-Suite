@@ -1,37 +1,80 @@
 <template>
-  <div class="admin-container">
-    <h2>Create New Suite</h2>
-    
-    <form @submit.prevent="handleSubmit" class="suite-form">
-      <div class="form-group">
-        <label>Suite Title</label>
-        <input v-model="form.title" type="text" placeholder="e.g. Yorkville Penthouse" required />
-      </div>
+  <main class="min-h-screen w-full bg-slate-50 py-12 px-4 flex flex-col items-center">
+    <div class="w-full max-w-lg bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
+      <h2 class="text-2xl font-bold text-slate-900 mb-6">Create New Suite</h2>
 
-      <div class="form-group">
-        <label>Location / Neighborhood</label>
-        <input v-model="form.location" type="text" placeholder="e.g. Downtown Toronto, ON" required />
-      </div>
+      <form @submit.prevent="handleSubmit" class="space-y-4">
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-1">Suite Name</label>
+          <input 
+            v-model="form.suite_name" 
+            type="text" 
+            placeholder="e.g. Grand Horizon Ocean Suite" 
+            required 
+            class="w-full px-4 py-2.5 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-900"
+          />
+        </div>
 
-      <div class="form-group">
-        <label>Image URL</label>
-        <input v-model="form.imageUrl" type="url" placeholder="https://..." required />
-      </div>
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-1">Location / City</label>
+          <input 
+            v-model="form.location" 
+            type="text" 
+            placeholder="e.g. Toronto" 
+            required 
+            class="w-full px-4 py-2.5 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-900"
+          />
+        </div>
 
-      <div class="form-group">
-        <label>Official Website Link</label>
-        <input v-model="form.websiteUrl" type="url" placeholder="https://..." required />
-      </div>
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-1">Suite Image / Website URL</label>
+          <input 
+            v-model="form.url" 
+            type="url" 
+            placeholder="https://..." 
+            required 
+            class="w-full px-4 py-2.5 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-900"
+          />
+        </div>
 
-      <button type="submit" :disabled="isSubmitting" class="submit-btn">
-        {{ isSubmitting ? 'Saving...' : 'Publish Suite' }}
-      </button>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">Bedrooms</label>
+            <input 
+              v-model.number="form.bedroom_num" 
+              type="number" 
+              min="0"
+              required 
+              class="w-full px-4 py-2.5 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-900"
+            />
+          </div>
 
-      <p v-if="message" :class="['status-msg', isError ? 'error' : 'success']">
-        {{ message }}
-      </p>
-    </form>
-  </div>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">Bathrooms</label>
+            <input 
+              v-model.number="form.bathroom_num" 
+              type="number" 
+              min="0"
+              required 
+              class="w-full px-4 py-2.5 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-900"
+            />
+          </div>
+        </div>
+
+        <button 
+          type="submit" 
+          :disabled="isSubmitting"
+          class="w-full mt-4 bg-slate-900 text-white font-semibold py-3 rounded-xl hover:bg-slate-800 transition-all disabled:bg-slate-400"
+        >
+          {{ isSubmitting ? 'Saving...' : 'Publish Suite' }}
+        </button>
+
+        <p v-if="statusMessage" :class="['text-center font-medium text-sm mt-3', isError ? 'text-red-500' : 'text-emerald-600']">
+          {{ statusMessage }}
+        </p>
+      </form>
+    </div>
+  </main>
 </template>
 
 <script setup>
@@ -39,30 +82,31 @@ import { ref } from 'vue'
 import { supabase } from '../supabase'
 
 const form = ref({
-  title: '',
+  suite_name: '',
   location: '',
-  imageUrl: '',
-  websiteUrl: ''
+  url: '',
+  bedroom_num: 1,
+  bathroom_num: 1
 })
 
 const isSubmitting = ref(false)
-const message = ref('')
+const statusMessage = ref('')
 const isError = ref(false)
 
 async function handleSubmit() {
   isSubmitting.value = true
-  message.value = ''
+  statusMessage.value = ''
   isError.value = false
 
-  // Insert form data into the Supabase 'suites' table
   const { error } = await supabase
-    .from('suites')
+    .from('Suites')
     .insert([
       {
-        title: form.value.title,
+        suite_name: form.value.suite_name,
         location: form.value.location,
-        image_url: form.value.imageUrl,
-        website_url: form.value.websiteUrl
+        url: form.value.url,
+        bedroom_num: form.value.bedroom_num,
+        bathroom_num: form.value.bathroom_num
       }
     ])
 
@@ -70,57 +114,13 @@ async function handleSubmit() {
 
   if (error) {
     isError.value = true
-    message.value = 'Failed to create suite. Please try again.'
+    statusMessage.value = 'Error adding suite. Please try again.'
     console.error(error)
   } else {
-    message.value = 'Suite published successfully!'
-    // Reset form fields
-    form.value = { title: '', location: '', imageUrl: '', websiteUrl: '' }
+    statusMessage.value = 'Suite added successfully!'
+    form.value = { suite_name: '', location: '', url: '', bedroom_num: 1, bathroom_num: 1 }
   }
 }
 </script>
 
-<style scoped>
-.admin-container {
-  max-width: 500px;
-  margin: 40px auto;
-  padding: 24px;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-.form-group {
-  margin-bottom: 16px;
-  display: flex;
-  flex-direction: column;
-}
-.form-group label {
-  font-weight: 600;
-  margin-bottom: 6px;
-}
-.form-group input {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-.submit-btn {
-  width: 100%;
-  padding: 12px;
-  background-color: #10b981;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-weight: bold;
-  cursor: pointer;
-}
-.submit-btn:disabled {
-  background-color: #a7f3d0;
-}
-.status-msg {
-  margin-top: 16px;
-  text-align: center;
-  font-weight: bold;
-}
-.success { color: #059669; }
-.error { color: #dc2626; }
-</style>
+<style scoped></style>
