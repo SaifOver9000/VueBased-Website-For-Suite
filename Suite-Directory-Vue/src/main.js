@@ -1,6 +1,9 @@
 import { createApp } from 'vue'
 import App from './App.vue'
+import router from './router/router.js'
 import './style.css'
 
+const app = createApp(App)
 
-createApp(App).mount('#app')
+app.use(router) // Tells Vue to handle <RouterView />
+app.mount('#app')
