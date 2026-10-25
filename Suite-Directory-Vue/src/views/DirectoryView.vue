@@ -86,7 +86,14 @@ const filteredSuites = computed(() => {
 
 function handleSuiteSelect(selectedSuite) {
   if (selectedSuite.websiteUrl) {
+    // Open before any await so the browser treats it as part of the click (no popup blocking)
     window.open(selectedSuite.websiteUrl, '_blank')
   }
+  recordClick(selectedSuite.id)
+}
+
+async function recordClick(suiteId) {
+  const { error } = await supabase.rpc('increment_suite_clicks', { suite_id: suiteId })
+  if (error) console.error('Error recording click:', error)
 }
 </script>
