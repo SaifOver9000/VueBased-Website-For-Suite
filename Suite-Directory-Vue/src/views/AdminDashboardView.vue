@@ -86,14 +86,23 @@
               class="border-t border-slate-200 hover:bg-slate-50"
             >
               <td class="px-4 py-3">
-                <a
-                  :href="suite.url"
-                  target="_blank"
-                  rel="noopener"
-                  class="font-semibold text-slate-900 hover:text-blue-600"
-                >
-                  {{ suite.suite_name }}
-                </a>
+                <div class="flex items-center gap-3">
+                  <img
+                    v-if="suite.image_url"
+                    :src="suite.image_url"
+                    :alt="suite.suite_name"
+                    class="w-12 h-12 rounded-lg object-cover shrink-0"
+                  />
+                  <div v-else class="w-12 h-12 rounded-lg bg-slate-200 shrink-0"></div>
+                  <a
+                    :href="suite.url"
+                    target="_blank"
+                    rel="noopener"
+                    class="font-semibold text-slate-900 hover:text-blue-600"
+                  >
+                    {{ suite.suite_name }}
+                  </a>
+                </div>
               </td>
               <td class="px-4 py-3 text-slate-600">{{ suite.location }}</td>
               <td class="px-4 py-3 text-center text-slate-600">{{ suite.bedroom_num }}</td>

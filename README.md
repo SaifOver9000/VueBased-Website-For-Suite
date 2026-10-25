@@ -70,7 +70,8 @@ The app expects a table named `Suites` (capital S) with these columns:
 | `created_at`   | `timestamptz` | Default `now()`; used for ordering |
 | `suite_name`   | `text`        |                                    |
 | `location`     | `text`        | City; used by the search filter    |
-| `url`          | `text`        | Used as both image and link        |
+| `url`          | `text`        | Suite website; cards link here     |
+| `image_url`    | `text`        | Public photo URL; added by `suite_images.sql` |
 | `bedroom_num`  | `int`         |                                    |
 | `bathroom_num` | `int`         |                                    |
 | `click_count`  | `int`         | Default `0`; added by `admin_setup.sql` |
@@ -90,6 +91,8 @@ create table "Suites" (
 ```
 
 Then run [`Suite-Directory-Vue/supabase/admin_setup.sql`](Suite-Directory-Vue/supabase/admin_setup.sql) in the SQL Editor. It adds the `click_count` column and an `increment_suite_clicks` function for click tracking. It also enables Row Level Security so anyone can read suites, but only signed-in users can insert, update or delete them. If your `id` is a `uuid`, change the function's parameter type first, and remove any older policy that let the `anon` role write.
+
+Next, run [`Suite-Directory-Vue/supabase/suite_images.sql`](Suite-Directory-Vue/supabase/suite_images.sql) to enable photo uploads. It adds the `image_url` column and a public Storage bucket called `suite-images` that only signed-in users can upload to. Photos are uploaded from the add/edit suite form in the admin area.
 
 ### 4. Run
 
@@ -122,7 +125,8 @@ Suite-Directory-Vue/
     │   └── ErrorPage.vue   # 404 markup (not yet routed)
     └── data/suites.json    # Sample data (unused)
 supabase/
-└── admin_setup.sql         # Click tracking + RLS policies
+├── admin_setup.sql         # Click tracking + RLS policies
+└── suite_images.sql        # image_url column + suite-images Storage bucket
 ```
 
 ## Known issues / TODO

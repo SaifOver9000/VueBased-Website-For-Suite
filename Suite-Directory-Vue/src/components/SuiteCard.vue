@@ -5,11 +5,15 @@
   >
     <!-- Hotel Image -->
     <a href="#" class="block relative group overflow-hidden" @click.prevent>
-      <img 
-        class="w-full h-72 object-cover group-hover:scale-105 transition-transform duration-500" 
-        :src="suite.image" 
-        :alt="suite.name" 
+      <img
+        v-if="suite.image"
+        class="w-full h-72 object-cover group-hover:scale-105 transition-transform duration-500"
+        :src="suite.image"
+        :alt="suite.name"
       />
+      <div v-else class="w-full h-72 bg-slate-200 flex items-center justify-center text-slate-400 text-sm font-medium">
+        No photo yet
+      </div>
       <!-- Rating Badge -->
       <span 
         v-if="suite.rating" 

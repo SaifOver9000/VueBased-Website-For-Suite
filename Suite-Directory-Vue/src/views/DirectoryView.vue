@@ -60,7 +60,7 @@ onMounted(async () => {
       id: item.id,
       name: item.suite_name,
       city: item.location,
-      image: item.url,
+      image: item.image_url,
       websiteUrl: item.url,
       features: { 
         beds: item.bedroom_num, 

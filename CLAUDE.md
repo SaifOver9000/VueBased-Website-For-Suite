@@ -39,6 +39,8 @@ There is no linter, formatter, type checker or test suite configured. Verify cha
 
 [supabase/admin_setup.sql](Suite-Directory-Vue/supabase/admin_setup.sql) adds the `click_count` column, the `increment_suite_clicks(bigint)` security-definer function (so anon visitors can count clicks without update rights), and RLS: anyone can select, only `authenticated` can insert/update/delete. Any signed-in user counts as admin, so public sign-ups should stay disabled in Supabase Auth.
 
+[supabase/suite_images.sql](Suite-Directory-Vue/supabase/suite_images.sql) adds the `image_url` column and the public `suite-images` Storage bucket (authenticated-only writes). CardBuilderView uploads the picked file under a random UUID name, then saves `getPublicUrl()` into `image_url`. Replaced or deleted suites leave their old image files in the bucket.
+
 ### Data shape
 
 The table is named `Suites` (capital S). DB columns → UI object (mapping lives in DirectoryView):
@@ -48,7 +50,8 @@ The table is named `Suites` (capital S). DB columns → UI object (mapping lives
 | `id`           | `id`                                  |
 | `suite_name`   | `name`                                |
 | `location`     | `city`                                |
-| `url`          | both `image` and `websiteUrl`         |
+| `url`          | `websiteUrl`                          |
+| `image_url`    | `image`                               |
 | `bedroom_num`  | `features.beds`                       |
 | `bathroom_num` | `features.baths`                      |
 | `click_count`  | (admin dashboard only, read raw)      |
