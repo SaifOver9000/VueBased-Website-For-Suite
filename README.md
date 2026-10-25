@@ -6,8 +6,29 @@ The app lives in [`Suite-Directory-Vue/`](Suite-Directory-Vue/).
 
 ## Features
 
-- **Directory** (`/`): lists suites from Supabase, newest first, with a search box that filters by city or suite name (defaults to "Toronto"). Clicking a card opens the suite's URL in a new tab.
-- **Add Suite** (`/admin/create`): a form that inserts a new suite (name, location, URL, bedrooms, bathrooms) into Supabase.
+- **Directory** (`/`): lists suites from Supabase, newest first, with a search box that filters by city or suite name (defaults to "Toronto"). Clicking a card opens the suite's URL in a new tab and records a click.
+- **Admin dashboard** (`/admin`): see below.
+
+## Admin access
+
+The admin area isn't linked from the public site. To get in, go to:
+
+```
+http://localhost:5173/admin      # dev server; use your deployed domain in production
+```
+
+You'll be redirected to `/login` if you aren't signed in. After signing in, an **Admin** link and **Sign out** button appear in the nav bar.
+
+| Route              | What it does                                                         |
+| ------------------ | -------------------------------------------------------------------- |
+| `/admin`           | Dashboard: suite count, total clicks, most-clicked suite, and a searchable/sortable table with edit and delete |
+| `/admin/create`    | Add a new suite                                                      |
+| `/admin/edit/:id`  | Edit an existing suite                                               |
+| `/login`           | Admin sign-in (Supabase email/password)                              |
+
+Admin accounts are created in the Supabase dashboard under **Authentication → Users**. Any signed-in user has full admin rights, so keep public sign-ups disabled (**Authentication → Sign In / Providers**).
+
+Hiding the link is only cosmetic. The real protection is the Row Level Security policies in `supabase/admin_setup.sql` (step 3 below).
 
 ## Tech stack
 
@@ -52,6 +73,7 @@ The app expects a table named `Suites` (capital S) with these columns:
 | `url`          | `text`        | Used as both image and link        |
 | `bedroom_num`  | `int`         |                                    |
 | `bathroom_num` | `int`         |                                    |
+| `click_count`  | `int`         | Default `0`; added by `admin_setup.sql` |
 
 Example SQL:
 
@@ -67,7 +89,7 @@ create table "Suites" (
 );
 ```
 
-If Row Level Security is enabled, add policies allowing the `anon` role to `select` (and `insert`, for the Add Suite page).
+Then run [`Suite-Directory-Vue/supabase/admin_setup.sql`](Suite-Directory-Vue/supabase/admin_setup.sql) in the SQL Editor. It adds the `click_count` column and an `increment_suite_clicks` function for click tracking. It also enables Row Level Security so anyone can read suites, but only signed-in users can insert, update or delete them. If your `id` is a `uuid`, change the function's parameter type first, and remove any older policy that let the `anon` role write.
 
 ### 4. Run
 
@@ -85,23 +107,25 @@ Suite-Directory-Vue/
 ├── vite.config.js          # Vue, Tailwind and Vue DevTools plugins; "@" → src/
 └── src/
     ├── main.js             # App bootstrap + router
-    ├── App.vue             # Nav bar and <RouterView />
+    ├── App.vue             # Nav bar (admin links only when signed in) and <RouterView />
     ├── supabase.js         # Supabase client (reads VITE_* env vars)
     ├── style.css           # Tailwind entry
-    ├── router/router.js    # Routes: / and /admin/create
+    ├── router/router.js    # Routes + auth guard for /admin*
     ├── views/
-    │   ├── DirectoryView.vue    # Fetches, maps and filters suites
-    │   └── CardBuilderView.vue  # Add Suite form
+    │   ├── DirectoryView.vue       # Fetches, maps and filters suites; records clicks
+    │   ├── LoginView.vue           # Admin sign-in
+    │   ├── AdminDashboardView.vue  # Stats + suite table with edit/delete
+    │   └── CardBuilderView.vue     # Add / edit suite form
     ├── components/
     │   ├── SuiteGrid.vue   # List of cards
     │   ├── SuiteCard.vue   # Single suite card
     │   └── ErrorPage.vue   # 404 markup (not yet routed)
-    └── data/suites.json    # Sample data
+    └── data/suites.json    # Sample data (unused)
+supabase/
+└── admin_setup.sql         # Click tracking + RLS policies
 ```
 
 ## Known issues / TODO
 
-- `SuiteGrid.vue` defines its own hardcoded `suites` list instead of declaring a `suites` prop, so the directory shows sample data rather than the Supabase results passed in from `DirectoryView`.
 - `ErrorPage.vue` is plain markup without a `<template>` and isn't registered as a catch-all route.
-- `/admin/create` has no authentication.
 - `.env` is committed to the repo. Move the values to `.env.local` and add `.env` to `.gitignore`.
