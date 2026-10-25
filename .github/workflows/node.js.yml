@@ -1,4 +1,4 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# This workflow will do a clean installation of node dependencies, cache/restore them and build the source code across different versions of node
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
 
 name: Node.js CI
@@ -14,9 +14,15 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    # The app (package.json + package-lock.json) lives in a subfolder, not the repo root
+    defaults:
+      run:
+        working-directory: Suite-Directory-Vue
+
     strategy:
       matrix:
-        node-version: [18.x, 20.x, 22.x]
+        # Must satisfy "engines" in package.json: ^22.18.0 || >=24.12.0
+        node-version: [22.x, 24.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -26,6 +32,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+        cache-dependency-path: Suite-Directory-Vue/package-lock.json
     - run: npm ci
-    - run: npm run build --if-present
-    - run: npm test
+    - run: npm run build
+    # No test script exists yet; add "npm test" back once package.json has one
