@@ -100,6 +100,8 @@ Next, run [`Suite-Directory-Vue/supabase/suite_images.sql`](Suite-Directory-Vue/
 npm run dev       # start the dev server with hot reload
 npm run build     # production build into dist/
 npm run preview   # serve the production build locally
+npm test          # run the test suite
+npm run coverage  # run tests with a coverage report (HTML in coverage/index.html)
 ```
 
 ## Project structure
