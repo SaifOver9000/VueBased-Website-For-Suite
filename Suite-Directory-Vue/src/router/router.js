@@ -8,9 +8,24 @@ import LoginView from '../views/LoginView.vue'
 const routes = [
   { path: '/', name: 'Directory', component: DirectoryView },
   { path: '/login', name: 'Login', component: LoginView },
-  { path: '/admin', name: 'AdminDashboard', component: AdminDashboardView, meta: { requiresAuth: true } },
-  { path: '/admin/create', name: 'CardBuilder', component: CardBuilderView, meta: { requiresAuth: true } },
-  { path: '/admin/edit/:id', name: 'CardEditor', component: CardBuilderView, meta: { requiresAuth: true } }
+  {
+    path: '/admin',
+    name: 'AdminDashboard',
+    component: AdminDashboardView,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/create',
+    name: 'CardBuilder',
+    component: CardBuilderView,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/edit/:id',
+    name: 'CardEditor',
+    component: CardBuilderView,
+    meta: { requiresAuth: true }
+  }
 ]
 
 const router = createRouter({

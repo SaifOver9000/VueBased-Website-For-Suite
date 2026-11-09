@@ -23,7 +23,9 @@ async function handleSignOut() {
 <template>
   <div class="min-h-screen bg-slate-50">
     <!-- Navigation Bar -->
-    <nav class="w-full bg-white border-b border-slate-200 px-6 py-4 flex justify-between items-center">
+    <nav
+      class="w-full bg-white border-b border-slate-200 px-6 py-4 flex justify-between items-center"
+    >
       <RouterLink to="/" class="text-xl font-bold text-slate-900 tracking-tight">
         🏢 Toronto Suites
       </RouterLink>
@@ -46,8 +48,8 @@ async function handleSignOut() {
         <button
           v-if="session"
           type="button"
-          @click="handleSignOut"
           class="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors"
+          @click="handleSignOut"
         >
           Sign out
         </button>

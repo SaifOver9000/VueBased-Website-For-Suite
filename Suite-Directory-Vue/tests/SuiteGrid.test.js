@@ -5,7 +5,7 @@ import SuiteCard from '../src/components/SuiteCard.vue'
 
 const suites = [
   { id: 1, name: 'A', features: { beds: 1, baths: 1 } },
-  { id: 2, name: 'B', features: { beds: 2, baths: 2 } },
+  { id: 2, name: 'B', features: { beds: 2, baths: 2 } }
 ]
 
 describe('SuiteGrid', () => {

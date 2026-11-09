@@ -1,39 +1,43 @@
 <template>
   <main class="min-h-screen w-full bg-slate-50 py-12 px-4 flex flex-col items-center">
-    
     <!-- Page Header Section -->
     <header class="w-full max-w-xl text-center mb-8">
       <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-2">
         Suites in {{ currentCity }}
       </h1>
-      <p class="text-slate-500 text-sm">
-        Discover top-rated luxury accommodations and stays
-      </p>
+      <p class="text-slate-500 text-sm">Discover top-rated luxury accommodations and stays</p>
 
       <!-- Search Bar -->
       <div class="mt-6 relative">
-        <input 
-          v-model="searchQuery" 
-          type="text" 
-          placeholder="Search by city (e.g., Toronto, Paris)..." 
+        <input
+          v-model="searchQuery"
+          type="text"
+          placeholder="Search by city (e.g., Toronto, Paris)..."
           class="w-full px-5 py-3.5 pl-11 bg-white border-2 border-black rounded-2xl shadow-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900 transition-all"
         />
-        <svg class="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+        <svg
+          class="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+          />
         </svg>
       </div>
     </header>
-    
+
     <!-- Loading State -->
-    <div v-if="isLoading" class="text-slate-500 font-medium py-8">
-      Loading suites...
-    </div>
+    <div v-if="isLoading" class="text-slate-500 font-medium py-8">Loading suites...</div>
 
     <!-- Grid Layout Container -->
     <section v-else class="w-full max-w-xl">
       <SuiteGrid :suites="filteredSuites" @select="handleSuiteSelect" />
     </section>
-
   </main>
 </template>
 
@@ -56,15 +60,15 @@ onMounted(async () => {
     console.error('Error fetching suites:', error)
   } else if (data) {
     // Map Supabase columns to UI structure
-    suites.value = data.map(item => ({
+    suites.value = data.map((item) => ({
       id: item.id,
       name: item.suite_name,
       city: item.location,
       image: item.image_url,
       websiteUrl: item.url,
-      features: { 
-        beds: item.bedroom_num, 
-        baths: item.bathroom_num 
+      features: {
+        beds: item.bedroom_num,
+        baths: item.bathroom_num
       }
     }))
   }
@@ -78,9 +82,10 @@ const currentCity = computed(() => {
 const filteredSuites = computed(() => {
   if (!searchQuery.value) return suites.value
   const query = searchQuery.value.toLowerCase()
-  return suites.value.filter(suite => 
-    (suite.city && suite.city.toLowerCase().includes(query)) || 
-    (suite.name && suite.name.toLowerCase().includes(query))
+  return suites.value.filter(
+    (suite) =>
+      (suite.city && suite.city.toLowerCase().includes(query)) ||
+      (suite.name && suite.name.toLowerCase().includes(query))
   )
 })
 

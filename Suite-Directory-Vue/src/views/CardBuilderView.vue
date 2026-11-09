@@ -4,13 +4,15 @@
       <RouterLink to="/admin" class="text-sm font-medium text-slate-500 hover:text-slate-900">
         ← Back to dashboard
       </RouterLink>
-      <h2 class="text-2xl font-bold text-slate-900 mt-2 mb-6">{{ isEditing ? 'Edit Suite' : 'Create New Suite' }}</h2>
+      <h2 class="text-2xl font-bold text-slate-900 mt-2 mb-6">
+        {{ isEditing ? 'Edit Suite' : 'Create New Suite' }}
+      </h2>
 
       <div v-if="isLoading" class="text-slate-500 font-medium py-8 text-center">
         Loading suite...
       </div>
 
-      <form v-else @submit.prevent="handleSubmit" class="space-y-4">
+      <form v-else class="space-y-4" @submit.prevent="handleSubmit">
         <div>
           <label class="block text-sm font-semibold text-slate-700 mb-1">Suite Name</label>
           <input
@@ -55,11 +57,13 @@
           <input
             type="file"
             accept="image/*"
-            @change="handleFileChange"
             class="w-full text-sm text-slate-600 file:mr-4 file:px-4 file:py-2 file:rounded-xl file:border-0 file:bg-slate-100 file:font-semibold file:text-slate-700 hover:file:bg-slate-200"
+            @change="handleFileChange"
           />
           <p class="text-xs text-slate-500 mt-1">
-            JPG, PNG or WebP, up to 5 MB.{{ isEditing ? ' Leave empty to keep the current photo.' : '' }}
+            JPG, PNG or WebP, up to 5 MB.{{
+              isEditing ? ' Leave empty to keep the current photo.' : ''
+            }}
           </p>
         </div>
 
@@ -92,10 +96,16 @@
           :disabled="isSubmitting"
           class="w-full mt-4 bg-slate-900 text-white font-semibold py-3 rounded-xl hover:bg-slate-800 transition-all disabled:bg-slate-400"
         >
-          {{ isSubmitting ? 'Saving...' : (isEditing ? 'Save Changes' : 'Publish Suite') }}
+          {{ isSubmitting ? 'Saving...' : isEditing ? 'Save Changes' : 'Publish Suite' }}
         </button>
 
-        <p v-if="statusMessage" :class="['text-center font-medium text-sm mt-3', isError ? 'text-red-500' : 'text-emerald-600']">
+        <p
+          v-if="statusMessage"
+          :class="[
+            'text-center font-medium text-sm mt-3',
+            isError ? 'text-red-500' : 'text-emerald-600'
+          ]"
+        >
           {{ statusMessage }}
         </p>
       </form>
@@ -142,11 +152,7 @@ const previewUrl = computed(() => localPreview.value || form.value.image_url)
 onMounted(async () => {
   if (!suiteId) return
 
-  const { data, error } = await supabase
-    .from('Suites')
-    .select('*')
-    .eq('id', suiteId)
-    .single()
+  const { data, error } = await supabase.from('Suites').select('*').eq('id', suiteId).single()
 
   if (error) {
     isError.value = true

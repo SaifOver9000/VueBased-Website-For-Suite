@@ -1,0 +1,37 @@
+# Checks code style: ESLint (eslint.config.js) for code-quality and Vue rules,
+# Prettier (.prettierrc.json) for formatting. Fix locally with `npm run lint:fix && npm run format`.
+
+name: Lint
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  lint:
+
+    runs-on: ubuntu-latest
+
+    # The app (package.json + package-lock.json) lives in a subfolder, not the repo root
+    defaults:
+      run:
+        working-directory: Suite-Directory-Vue
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Use Node.js 24.x
+      uses: actions/setup-node@v4
+      with:
+        node-version: 24.x
+        cache: 'npm'
+        cache-dependency-path: Suite-Directory-Vue/package-lock.json
+    - run: npm ci
+    # Fails on any ESLint error or warning (--max-warnings 0 in the lint script)
+    - name: ESLint
+      run: npm run lint
+    # Runs even if ESLint failed, so both sets of problems show up in one run
+    - name: Prettier
+      if: success() || failure()
+      run: npm run format:check

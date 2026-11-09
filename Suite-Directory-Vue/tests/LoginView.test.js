@@ -21,7 +21,10 @@ describe('LoginView', () => {
     const { wrapper, push } = await setup()
     await wrapper.get('form').trigger('submit')
     await flushPromises()
-    expect(supabase.auth.signInWithPassword).toHaveBeenCalledWith({ email: 'admin@example.com', password: 'secret' })
+    expect(supabase.auth.signInWithPassword).toHaveBeenCalledWith({
+      email: 'admin@example.com',
+      password: 'secret'
+    })
     expect(push).toHaveBeenCalledWith('/admin')
   })
 
@@ -35,7 +38,11 @@ describe('LoginView', () => {
 
   it('disables the button while submitting', async () => {
     let resolve
-    supabase.auth.signInWithPassword.mockReturnValue(new Promise(r => { resolve = r }))
+    supabase.auth.signInWithPassword.mockReturnValue(
+      new Promise((r) => {
+        resolve = r
+      })
+    )
     const { wrapper } = await setup()
     await wrapper.get('form').trigger('submit')
     const button = wrapper.get('button')
@@ -48,7 +55,9 @@ describe('LoginView', () => {
 
   it("shows Supabase's error message and stays on the page", async () => {
     vi.spyOn(console, 'error').mockImplementation(() => {})
-    supabase.auth.signInWithPassword.mockResolvedValue({ error: { message: 'Email not confirmed' } })
+    supabase.auth.signInWithPassword.mockResolvedValue({
+      error: { message: 'Email not confirmed' }
+    })
     const { wrapper, push } = await setup()
     await wrapper.get('form').trigger('submit')
     await flushPromises()

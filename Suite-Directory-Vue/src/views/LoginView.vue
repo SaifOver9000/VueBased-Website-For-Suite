@@ -3,7 +3,7 @@
     <div class="w-full max-w-sm bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
       <h2 class="text-2xl font-bold text-slate-900 mb-6">Admin Sign In</h2>
 
-      <form @submit.prevent="handleLogin" class="space-y-4">
+      <form class="space-y-4" @submit.prevent="handleLogin">
         <div>
           <label class="block text-sm font-semibold text-slate-700 mb-1">Email</label>
           <input

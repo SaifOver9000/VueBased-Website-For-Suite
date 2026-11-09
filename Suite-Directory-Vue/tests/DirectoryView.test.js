@@ -7,9 +7,33 @@ import SuiteGrid from '../src/components/SuiteGrid.vue'
 vi.mock('../src/supabase', () => import('./mocks/supabase.js'))
 
 const rows = [
-  { id: 1, suite_name: 'Harbour Loft', location: 'Toronto', url: 'https://harbour.example', image_url: 'https://img/1.jpg', bedroom_num: 2, bathroom_num: 1 },
-  { id: 2, suite_name: 'Seine View', location: 'Paris', url: 'https://seine.example', image_url: null, bedroom_num: 1, bathroom_num: 1 },
-  { id: 3, suite_name: 'No Link', location: 'Toronto', url: null, image_url: null, bedroom_num: 3, bathroom_num: 2 },
+  {
+    id: 1,
+    suite_name: 'Harbour Loft',
+    location: 'Toronto',
+    url: 'https://harbour.example',
+    image_url: 'https://img/1.jpg',
+    bedroom_num: 2,
+    bathroom_num: 1
+  },
+  {
+    id: 2,
+    suite_name: 'Seine View',
+    location: 'Paris',
+    url: 'https://seine.example',
+    image_url: null,
+    bedroom_num: 1,
+    bathroom_num: 1
+  },
+  {
+    id: 3,
+    suite_name: 'No Link',
+    location: 'Toronto',
+    url: null,
+    image_url: null,
+    bedroom_num: 3,
+    bathroom_num: 2
+  }
 ]
 
 async function mountWith(result) {
@@ -43,22 +67,22 @@ describe('DirectoryView', () => {
       city: 'Toronto',
       image: 'https://img/1.jpg',
       websiteUrl: 'https://harbour.example',
-      features: { beds: 2, baths: 1 },
+      features: { beds: 2, baths: 1 }
     })
   })
 
   it('filters to Toronto by default', async () => {
     const { wrapper } = await mountWith({ data: rows, error: null })
     expect(wrapper.text()).toContain('Suites in Toronto')
-    expect(gridSuites(wrapper).map(s => s.id)).toEqual([1, 3])
+    expect(gridSuites(wrapper).map((s) => s.id)).toEqual([1, 3])
   })
 
   it('filters by city or name, case-insensitively', async () => {
     const { wrapper } = await mountWith({ data: rows, error: null })
     await wrapper.get('input').setValue('paris')
-    expect(gridSuites(wrapper).map(s => s.id)).toEqual([2])
+    expect(gridSuites(wrapper).map((s) => s.id)).toEqual([2])
     await wrapper.get('input').setValue('LOFT')
-    expect(gridSuites(wrapper).map(s => s.id)).toEqual([1])
+    expect(gridSuites(wrapper).map((s) => s.id)).toEqual([1])
   })
 
   it('shows everything and an "Everywhere" heading when search is empty', async () => {

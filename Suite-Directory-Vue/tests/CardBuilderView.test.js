@@ -7,8 +7,13 @@ import CardBuilderView from '../src/views/CardBuilderView.vue'
 vi.mock('../src/supabase', () => import('./mocks/supabase.js'))
 
 const existing = {
-  id: 7, suite_name: 'Harbour Loft', location: 'Toronto', url: 'https://harbour.example',
-  image_url: 'https://img/old.jpg', bedroom_num: 2, bathroom_num: 1,
+  id: 7,
+  suite_name: 'Harbour Loft',
+  location: 'Toronto',
+  url: 'https://harbour.example',
+  image_url: 'https://img/old.jpg',
+  bedroom_num: 2,
+  bathroom_num: 1
 }
 
 async function setup(path) {
@@ -60,10 +65,16 @@ describe('CardBuilderView', () => {
       await fillForm(wrapper)
       await wrapper.get('form').trigger('submit')
       await flushPromises()
-      expect(ins.insert).toHaveBeenCalledWith([{
-        suite_name: 'New Suite', location: 'Paris', url: 'https://new.example',
-        image_url: null, bedroom_num: 3, bathroom_num: 2,
-      }])
+      expect(ins.insert).toHaveBeenCalledWith([
+        {
+          suite_name: 'New Suite',
+          location: 'Paris',
+          url: 'https://new.example',
+          image_url: null,
+          bedroom_num: 3,
+          bathroom_num: 2
+        }
+      ])
       expect(wrapper.text()).toContain('Suite added successfully!')
       expect(wrapper.findAll('input')[0].element.value).toBe('')
     })
@@ -162,7 +173,9 @@ describe('CardBuilderView', () => {
       await wrapper.findAll('input')[0].setValue('Renamed')
       await wrapper.get('form').trigger('submit')
       await flushPromises()
-      expect(upd.update).toHaveBeenCalledWith(expect.objectContaining({ suite_name: 'Renamed', image_url: null }))
+      expect(upd.update).toHaveBeenCalledWith(
+        expect.objectContaining({ suite_name: 'Renamed', image_url: null })
+      )
       expect(upd.eq).toHaveBeenCalledWith('id', '7')
       expect(push).toHaveBeenCalledWith('/admin')
     })

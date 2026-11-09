@@ -13,9 +13,11 @@ npm run build     # production build -> dist/
 npm run preview   # serve the build
 npm test          # Vitest, once
 npm run coverage  # Vitest + V8 coverage -> coverage/ (fails under 90% on any metric)
+npm run lint      # ESLint (eslint.config.js), fails on any warning; lint:fix auto-fixes
+npm run format    # Prettier --write (.prettierrc.json); format:check only checks
 ```
 
-There is no linter, formatter or type checker. Verify changes with `npm test`, `npm run build` and by running the dev server.
+Style: Prettier with no semicolons, single quotes, no trailing commas, 100-char lines; ESLint uses `@eslint/js` recommended + `eslint-plugin-vue` `flat/recommended`, with `eslint-config-prettier` disabling formatting rules. There is no type checker. Verify changes with `npm run lint`, `npm run format:check`, `npm test`, `npm run build` and by running the dev server.
 
 ## Tests and CI
 
@@ -23,7 +25,8 @@ There is no linter, formatter or type checker. Verify changes with `npm test`, `
 - Tests never touch the real Supabase project: each file does `vi.mock('../src/supabase', () => import('./mocks/supabase.js'))`. `query(result)` in [tests/mocks/supabase.js](Suite-Directory-Vue/tests/mocks/supabase.js) returns a chainable builder that resolves to `{ data, error }`; set it with `supabase.from.mockReturnValue(...)`.
 - Views that use `useRoute`/`useRouter` are mounted with `makeRouter(path)` from [tests/helpers.js](Suite-Directory-Vue/tests/helpers.js) (memory history).
 - [.github/workflows/node.js.yml](.github/workflows/node.js.yml) runs `npm ci`, `npm run coverage` and `npm run build` on Node 22 and 24 for pushes/PRs to main; the Node 24 job writes a coverage table to the job summary and uploads `coverage/` as an artifact.
-- `ErrorPage.vue` is excluded from coverage because it can't be parsed (see Known issues).
+- [.github/workflows/lint.yml](.github/workflows/lint.yml) is a separate workflow (same triggers) that runs `npm run lint` and `npm run format:check` on Node 24.
+- `ErrorPage.vue` is excluded from coverage, ESLint and Prettier because it can't be parsed (see Known issues).
 
 ## Stack
 

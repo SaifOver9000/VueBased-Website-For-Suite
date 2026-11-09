@@ -11,8 +11,8 @@ export async function makeRouter(initialPath = '/', component = Stub) {
       { path: '/login', component: Stub },
       { path: '/admin', component: Stub },
       { path: '/admin/create', component },
-      { path: '/admin/edit/:id', component },
-    ],
+      { path: '/admin/edit/:id', component }
+    ]
   })
   router.push(initialPath)
   await router.isReady()
