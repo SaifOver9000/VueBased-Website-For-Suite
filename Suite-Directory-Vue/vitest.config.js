@@ -7,8 +7,8 @@ export default defineConfig({
   plugins: [vue()],
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url)),
-    },
+      '@': fileURLToPath(new URL('./src', import.meta.url))
+    }
   },
   test: {
     environment: 'jsdom',
@@ -27,8 +27,8 @@ export default defineConfig({
         statements: 90,
         branches: 90,
         functions: 90,
-        lines: 90,
-      },
-    },
-  },
+        lines: 90
+      }
+    }
+  }
 })

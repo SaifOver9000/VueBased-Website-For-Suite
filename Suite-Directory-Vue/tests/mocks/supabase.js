@@ -13,7 +13,7 @@ export function query(result = { data: [], error: null }) {
 
 export const bucket = {
   upload: vi.fn(),
-  getPublicUrl: vi.fn(),
+  getPublicUrl: vi.fn()
 }
 
 export const supabase = {
@@ -23,9 +23,9 @@ export const supabase = {
     getSession: vi.fn(),
     onAuthStateChange: vi.fn(),
     signInWithPassword: vi.fn(),
-    signOut: vi.fn(),
+    signOut: vi.fn()
   },
   storage: {
-    from: vi.fn(() => bucket),
-  },
+    from: vi.fn(() => bucket)
+  }
 }

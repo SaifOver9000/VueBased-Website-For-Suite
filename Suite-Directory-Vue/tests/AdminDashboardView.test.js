@@ -7,9 +7,39 @@ import AdminDashboardView from '../src/views/AdminDashboardView.vue'
 vi.mock('../src/supabase', () => import('./mocks/supabase.js'))
 
 const rows = () => [
-  { id: 1, suite_name: 'Bravo', location: 'Toronto', url: 'https://b', image_url: 'https://img/b.jpg', bedroom_num: 2, bathroom_num: 1, click_count: 5, created_at: '2026-01-02T00:00:00Z' },
-  { id: 2, suite_name: 'Alpha', location: 'Paris', url: 'https://a', image_url: null, bedroom_num: 1, bathroom_num: 1, click_count: 12, created_at: '2026-01-01T00:00:00Z' },
-  { id: 3, suite_name: 'Charlie', location: 'Toronto', url: 'https://c', image_url: null, bedroom_num: 3, bathroom_num: 2, click_count: null, created_at: null },
+  {
+    id: 1,
+    suite_name: 'Bravo',
+    location: 'Toronto',
+    url: 'https://b',
+    image_url: 'https://img/b.jpg',
+    bedroom_num: 2,
+    bathroom_num: 1,
+    click_count: 5,
+    created_at: '2026-01-02T00:00:00Z'
+  },
+  {
+    id: 2,
+    suite_name: 'Alpha',
+    location: 'Paris',
+    url: 'https://a',
+    image_url: null,
+    bedroom_num: 1,
+    bathroom_num: 1,
+    click_count: 12,
+    created_at: '2026-01-01T00:00:00Z'
+  },
+  {
+    id: 3,
+    suite_name: 'Charlie',
+    location: 'Toronto',
+    url: 'https://c',
+    image_url: null,
+    bedroom_num: 3,
+    bathroom_num: 2,
+    click_count: null,
+    created_at: null
+  }
 ]
 
 async function mountWith(result) {
@@ -20,8 +50,8 @@ async function mountWith(result) {
   return wrapper
 }
 
-const names = (wrapper) => wrapper.findAll('tbody a[target="_blank"]').map(a => a.text())
-const stats = (wrapper) => wrapper.findAll('section > div').map(d => d.text())
+const names = (wrapper) => wrapper.findAll('tbody a[target="_blank"]').map((a) => a.text())
+const stats = (wrapper) => wrapper.findAll('section > div').map((d) => d.text())
 
 describe('AdminDashboardView', () => {
   it('shows a loading state first', async () => {

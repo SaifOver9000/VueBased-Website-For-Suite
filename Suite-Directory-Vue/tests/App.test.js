@@ -9,7 +9,9 @@ vi.mock('../src/supabase', () => import('./mocks/supabase.js'))
 let authCallback
 async function setup(session) {
   supabase.auth.getSession.mockResolvedValue({ data: { session } })
-  supabase.auth.onAuthStateChange.mockImplementation(cb => { authCallback = cb })
+  supabase.auth.onAuthStateChange.mockImplementation((cb) => {
+    authCallback = cb
+  })
   supabase.auth.signOut.mockResolvedValue({ error: null })
   const router = await makeRouter('/admin')
   const push = vi.spyOn(router, 'push')
@@ -19,7 +21,9 @@ async function setup(session) {
 }
 
 describe('App', () => {
-  beforeEach(() => { authCallback = undefined })
+  beforeEach(() => {
+    authCallback = undefined
+  })
 
   it('hides admin controls when signed out', async () => {
     const { wrapper } = await setup(null)

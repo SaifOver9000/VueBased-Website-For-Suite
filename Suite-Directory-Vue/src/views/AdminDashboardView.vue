@@ -1,7 +1,6 @@
 <template>
   <main class="min-h-screen w-full bg-slate-50 py-12 px-4 flex flex-col items-center">
     <div class="w-full max-w-5xl">
-
       <!-- Header -->
       <header class="flex flex-wrap items-center justify-between gap-4 mb-8">
         <div>
@@ -53,7 +52,10 @@
         </select>
       </div>
 
-      <p v-if="statusMessage" :class="['font-medium text-sm mb-4', isError ? 'text-red-500' : 'text-emerald-600']">
+      <p
+        v-if="statusMessage"
+        :class="['font-medium text-sm mb-4', isError ? 'text-red-500' : 'text-emerald-600']"
+      >
         {{ statusMessage }}
       </p>
 
@@ -107,8 +109,12 @@
               <td class="px-4 py-3 text-slate-600">{{ suite.location }}</td>
               <td class="px-4 py-3 text-center text-slate-600">{{ suite.bedroom_num }}</td>
               <td class="px-4 py-3 text-center text-slate-600">{{ suite.bathroom_num }}</td>
-              <td class="px-4 py-3 text-center font-semibold text-slate-900">{{ suite.click_count ?? 0 }}</td>
-              <td class="px-4 py-3 text-slate-500 whitespace-nowrap">{{ formatDate(suite.created_at) }}</td>
+              <td class="px-4 py-3 text-center font-semibold text-slate-900">
+                {{ suite.click_count ?? 0 }}
+              </td>
+              <td class="px-4 py-3 text-slate-500 whitespace-nowrap">
+                {{ formatDate(suite.created_at) }}
+              </td>
               <td class="px-4 py-3 text-right whitespace-nowrap">
                 <RouterLink
                   :to="`/admin/edit/${suite.id}`"
@@ -119,8 +125,8 @@
                 <button
                   type="button"
                   :disabled="deletingId === suite.id"
-                  @click="handleDelete(suite)"
                   class="font-medium text-red-600 hover:text-red-800 disabled:text-slate-400"
+                  @click="handleDelete(suite)"
                 >
                   {{ deletingId === suite.id ? 'Deleting...' : 'Delete' }}
                 </button>
@@ -129,7 +135,6 @@
           </tbody>
         </table>
       </div>
-
     </div>
   </main>
 </template>
@@ -178,9 +183,10 @@ const topSuite = computed(() => {
 const visibleSuites = computed(() => {
   const query = searchQuery.value.trim().toLowerCase()
   const filtered = query
-    ? suites.value.filter(suite =>
-        (suite.location && suite.location.toLowerCase().includes(query)) ||
-        (suite.suite_name && suite.suite_name.toLowerCase().includes(query))
+    ? suites.value.filter(
+        (suite) =>
+          (suite.location && suite.location.toLowerCase().includes(query)) ||
+          (suite.suite_name && suite.suite_name.toLowerCase().includes(query))
       )
     : [...suites.value]
 
@@ -204,11 +210,7 @@ async function handleDelete(suite) {
   isError.value = false
 
   // .select() returns the deleted rows, so a delete blocked by RLS shows up as an empty result
-  const { data, error } = await supabase
-    .from('Suites')
-    .delete()
-    .eq('id', suite.id)
-    .select()
+  const { data, error } = await supabase.from('Suites').delete().eq('id', suite.id).select()
 
   deletingId.value = null
 
@@ -217,7 +219,7 @@ async function handleDelete(suite) {
     statusMessage.value = 'Error deleting suite. Please try again.'
     console.error(error)
   } else {
-    suites.value = suites.value.filter(s => s.id !== suite.id)
+    suites.value = suites.value.filter((s) => s.id !== suite.id)
     statusMessage.value = `Deleted "${suite.suite_name}".`
   }
 }

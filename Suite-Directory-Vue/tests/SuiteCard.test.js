@@ -19,7 +19,9 @@ describe('SuiteCard', () => {
   })
 
   it('shows the image when one is set', () => {
-    const wrapper = mount(SuiteCard, { props: { suite: { ...baseSuite, image: 'https://x/a.jpg' } } })
+    const wrapper = mount(SuiteCard, {
+      props: { suite: { ...baseSuite, image: 'https://x/a.jpg' } }
+    })
     const img = wrapper.get('img')
     expect(img.attributes('src')).toBe('https://x/a.jpg')
     expect(img.attributes('alt')).toBe('Harbour Loft')
@@ -41,7 +43,7 @@ describe('SuiteCard', () => {
       tag: 'Featured',
       price: 220,
       description: 'Lake views',
-      features: { beds: 2, baths: 1, guests: 4, sqft: 900 },
+      features: { beds: 2, baths: 1, guests: 4, sqft: 900 }
     }
     const text = mount(SuiteCard, { props: { suite } }).text()
     expect(text).toContain('★ 4.8')
