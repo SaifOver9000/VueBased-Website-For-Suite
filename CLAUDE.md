@@ -11,9 +11,19 @@ cd Suite-Directory-Vue
 npm run dev       # Vite dev server
 npm run build     # production build -> dist/
 npm run preview   # serve the build
+npm test          # Vitest, once
+npm run coverage  # Vitest + V8 coverage -> coverage/ (fails under 90% on any metric)
 ```
 
-There is no linter, formatter, type checker or test suite configured. Verify changes with `npm run build` and by running the dev server.
+There is no linter, formatter or type checker. Verify changes with `npm test`, `npm run build` and by running the dev server.
+
+## Tests and CI
+
+- Tests live in [Suite-Directory-Vue/tests/](Suite-Directory-Vue/tests/) (Vitest + `@vue/test-utils`, jsdom), configured in [vitest.config.js](Suite-Directory-Vue/vitest.config.js), which is separate from vite.config.js so tests skip the devtools/Tailwind plugins.
+- Tests never touch the real Supabase project: each file does `vi.mock('../src/supabase', () => import('./mocks/supabase.js'))`. `query(result)` in [tests/mocks/supabase.js](Suite-Directory-Vue/tests/mocks/supabase.js) returns a chainable builder that resolves to `{ data, error }`; set it with `supabase.from.mockReturnValue(...)`.
+- Views that use `useRoute`/`useRouter` are mounted with `makeRouter(path)` from [tests/helpers.js](Suite-Directory-Vue/tests/helpers.js) (memory history).
+- [.github/workflows/node.js.yml](.github/workflows/node.js.yml) runs `npm ci`, `npm run coverage` and `npm run build` on Node 22 and 24 for pushes/PRs to main; the Node 24 job writes a coverage table to the job summary and uploads `coverage/` as an artifact.
+- `ErrorPage.vue` is excluded from coverage because it can't be parsed (see Known issues).
 
 ## Stack
 
